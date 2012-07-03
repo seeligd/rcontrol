@@ -1,0 +1,33 @@
+<html>
+	<head>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/static/ender.js"></script>
+		<script>
+			var socket = io.connect('/');
+
+			// register the game
+
+
+			// on input updates, show the data
+			socket.on("connect", function (data) {
+				$("#output").prepend("<p>waiting for input...</p>");
+			});
+			socket.on("game", function (data) {
+				$("#output").prepend("<p>" + JSON.stringify(data.data) + "</p>");
+			});
+
+			$(document).ready(function() {
+				//alert ('hi from game');
+				socket.emit('game', {info: "game - DOM ready"});
+			});
+
+
+		</script>
+
+	</head>
+	<body>
+		<h2>game</h2>
+		<div id="output"></div>
+	</body>
+</html>
+

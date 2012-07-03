@@ -1,0 +1,123 @@
+<!doctype html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+
+		<title>NES Control</title>
+		<meta name="description" content="">
+
+		<link rel="stylesheet" type="text/css" href="/static/style.css">
+		<!-- Mobile viewport optimization h5bp.com/ad -->
+		<meta name="viewport" content="width=device-width initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/static/ender.js"></script>
+		<script>
+			var socket = io.connect('/');
+			var log = console.log;
+			var downbutton = function(id) {
+				click(id, "down");
+			};
+			var upbutton = function(id) {
+				click(id, "up");
+			};
+
+			var click = function(id, direction) {
+				socket.emit('controller', { 
+					data: {
+						button: id,
+						direction: direction
+					}
+				});
+			};
+
+			$(document).ready(function() {
+
+				socket.emit('controller', { info: 'controller - DOM ready' });
+				console.log(socket);
+				$("button")
+				.bind('touchstart', function (e) {
+					downbutton( e.target.id); 
+				})
+				/*
+				.bind('mousedown', function (e) { 
+					downbutton( e.target.id); 
+				})
+				.bind('mouseup', function (e) {
+					upbutton( e.target.id); 
+				})
+				.bind('touchstart', function (e) {
+					downbutton( e.target.id); 
+				})
+				.bind('touchcancel', function (e) {
+					upbutton( e.target.id); 
+				})
+				.bind('touchend', function (e) {
+					upbutton( e.target.id); 
+				});
+				*/
+
+				document.ontouchmove = function(event) {
+					event.preventDefault();
+				}
+
+			});
+
+
+		</script>
+	</head>
+	<body>
+		<table>
+			<tr>
+			</tr>
+			<tr>
+				<td>
+				</td>
+				<td>
+					<button id="up"></button>
+				</td>
+				<td>
+				</td>
+				<td>
+				</td>
+				<td>
+				</td>
+				<td rowspan="3" class='ab'>
+					<button id="b"></button>
+				</td>
+				<td rowspan="3" class='ab'>
+					<button id="a"></button>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<button id="left"></button>
+				</td>
+				<td>
+				</td>
+				<td>
+					<button id="right"></button>
+				</td>
+				<td class='meta' style="text-align: right">
+					<button id="select">select</button>
+				</td>
+				<td class='meta'>
+					<button id="start">start</button>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				</td>
+				<td>
+					<button id="down"></button>
+				</td>
+			</tr>
+			<tr>
+			</tr>
+		</table>
+	</body>
+
+</html>
