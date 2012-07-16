@@ -5,7 +5,8 @@
 var express = require('express')
 , routes = require('./routes/index')
 , app = express.createServer()
-, io = require('socket.io').listen(app);
+, io = require('socket.io').listen(app)
+, state = require('./data/state');
 
 // Configuration
 app.configure(function(){
@@ -17,6 +18,8 @@ app.configure(function(){
 	app.use(express.static(__dirname + '/public'));
 });
 
+console.log("app - getting new game ID:", state.game.getNewGameId());
+
 app.configure('development', function(){
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
@@ -26,11 +29,30 @@ app.configure('production', function(){
 });
 
 // Routes
-
 app.get('/', routes.index);
 app.get('/game', routes.game);
-app.get('/controller', routes.controller);
+app.get('/game/:id', routes.game_existing);
+app.get('/:id', routes.controller);
 
 app.listen(3000, function(){
 	console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });
+
+function NotFound(msg){
+  this.name = 'NotFound';
+  Error.call(this, msg);
+  Error.captureStackTrace(this, arguments.callee);
+}
+
+NotFound.prototype.__proto__ = Error.prototype;
+
+
+app.error(function(err, req, res, next){
+    if (err instanceof NotFound) {
+        res.render('404.jade');
+    } else {
+        next(err);
+    }
+});
+
+
