@@ -7,6 +7,15 @@ a {
 	color: #00B7FF;
 }
 
+#log {
+	position: fixed;
+	top: 0
+	left: 0;
+	background: yellow;
+	overflow: auto;
+	width: 100%;
+	height: 100px;
+}
 #container {
 	display: inline-block;
 	position: absolute;
@@ -28,6 +37,7 @@ a {
 #buttonscontainer {
 	height: 100%;
 	width: 100%;
+	-webkit-user-select:none;
 }
 #buttonscontainer>div {
 	position: absolute;
