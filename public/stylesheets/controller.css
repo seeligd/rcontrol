@@ -14,7 +14,7 @@ a {
 	background: yellow;
 	overflow: auto;
 	width: 100%;
-	height: 100px;
+	height: 100*;
 }
 #container {
 	display: inline-block;
@@ -32,7 +32,9 @@ a {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background-color: #262e27 /* show me! */
+	/*
+	background-color: #262e27 
+	*/
 }
 #buttonscontainer {
 	height: 100%;
@@ -51,6 +53,24 @@ a {
 	left: 4.8%;
 	background: black;
 	border-radius: 10%;
+}
+
+#left, #up, #right, #down {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+}
+#left, #right{
+	width: 33%; 
+}
+#right {
+	right: 0;
+}
+#up, #down {
+	height: 33%; 
+}
+#down { 
+	bottom: 0;
 }
 
 #select, #start {
@@ -74,6 +94,9 @@ a {
 	border: 1px solid #444;
 	border-radius: 50%;
 
+	/* REMOVE */
+	height: 52%;
+	top: 8%;
 }
 
 #b {

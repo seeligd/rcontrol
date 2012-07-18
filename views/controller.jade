@@ -27,11 +27,16 @@ html(lang="en")
           div#b_container
           div#a_container
           
-          div#dpad.button
+          div#dpad
+            div#left.button
+            div#up.button
+            div#right.button
+            div#down.button
           div#select.button
           div#start.button
           div#a.button
           div#b.button
-  script(type='text/javascript', src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
+  script(type='text/javascript', src="/javascripts/jquery.min.js")
   script(type='text/javascript', src='/javascripts/socket.io.js')
+  script(type='text/javascript', src='/javascripts/underscore.js')
   script(type='text/javascript', src='/javascripts/controller.js')
