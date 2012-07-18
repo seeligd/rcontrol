@@ -3,13 +3,9 @@
 
 	var inlinelog;
 	//var socket = io.connect('/');
+	
 	log = function() {
-
-			//inlinelog.prepend(Array.prototype.slice.call(arguments));
-			//console.log(Array.prototype.slice.call(arguments));
-			//console.log(JSON.parse(arguments[0]));
 			inlinelog.prepend(arguments[0],"<br/>");
-			//console.log(inlinelog);
 		}
 
 	var click = function(id, direction) {
@@ -30,10 +26,8 @@
 		var buttonState = {}, currentlyPressed = {}, mouseDown = false;
 
 		$(".button").each(function(i,e) {
-			// get top/left/bottom/right
 			var b = $(e);
 			var offset = b.offset();
-			//console.log(b.attr('id'), Math.round(offset.left), b.width(), Math.round(offset.top), b.height() );
 			buttonState[b.attr('id')] = {
 				height: b.height(),
 				width: b.width(),
@@ -49,13 +43,9 @@
 		});
 
 		// subscribe to touch start, move and end events
-		// on start, if over a key, push that key down
-		// on move
-		// 	check all coordinates for matches, uncheck anything that doesn't have a match
-		// on end
-		//  check all touches for matches, uncheck anything that doesn't have a match
-		//
+		// on each event, iterate through all touches and map touch locations to buttons
 
+		// add any 'pressed' buttons to the hash of pressed buttons
 		var updateButtons = function(x,y,pressed) {
 			for(var b in buttonState) {
 				if (buttonState[b].intersect(x,y)) {
@@ -64,9 +54,9 @@
 			}
 		}
 
+		// for each touch event, go through the touches and figure out which buttons are being pressed
 		var handleTouchEvent = function(event,type) {
 			var pressed = {};
-			//var coords = [];
 			for (var i=0; i<event.touches.length; i++) {
 				if (event.touches[i].pageX) {
 					var x = event.touches[i].pageX, y = event.touches[i].pageY;
@@ -74,21 +64,18 @@
 				}
 			}
 
-			// update all button statuses 
-			/*
-			for(var b in buttonState) {
-					buttonState[b].pressed = (pressed[b] === true);
-			}
-			*/
+			var currentButtons = _.keys(currentlyPressed);
+			var nextButtons = _.keys(pressed);
 
-			if (!_.isEqual(currentlyPressed, pressed)) {
-				var p =[];
-				for(var b in pressed) {
-					p.push(b);
-				}
-				log(p.join(" "));
-				currentlyPressed = pressed;
+			var toPress = _.difference(nextButtons,currentButtons);
+			var toRelease = _.difference(currentButtons, nextButtons);
+
+			if (toPress.length > 0 || toRelease.length > 0) {
+				log("+ " + toPress.join(",") + " - " + toRelease.join(","));
 			}
+
+			// these are our new buttons
+			currentlyPressed = pressed;
 		}
 
 		//var element = document.getElementById('buttonscontainer');
@@ -97,7 +84,6 @@
 		.bind('touchstart', function (e) {
 			handleTouchEvent(e.originalEvent,'start');
 		})
-		/*
 		$("#buttonscontainer")
 		.bind('touchend', function (e) {
 			handleTouchEvent(e.originalEvent,'end');
@@ -105,22 +91,6 @@
 		.bind('touchmove', function (e) {
 			handleTouchEvent(e.originalEvent,'move');
 		})
-		*/
-		/*
-		.bind('mousemove', function(e) {
-			if (mouseDown) {
-				updateButtons(e.pageX, e.pageY);
-			}
-		})
-		.bind('mousedown', function (e) { 
-			//updateButtons(e.pageX, e.pageY);
-			mouseDown = true;
-		})
-		.bind('mouseup', function(e) {
-			//updateButtons(e.pageX, e.pageY, true);
-			mouseDown = false;
-		})
-		*/
 
 		document.ontouchmove = function(event) {
 			event.preventDefault();

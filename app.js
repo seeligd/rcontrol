@@ -38,21 +38,3 @@ app.listen(3000, function(){
 	console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });
 
-function NotFound(msg){
-  this.name = 'NotFound';
-  Error.call(this, msg);
-  Error.captureStackTrace(this, arguments.callee);
-}
-
-NotFound.prototype.__proto__ = Error.prototype;
-
-
-app.error(function(err, req, res, next){
-    if (err instanceof NotFound) {
-        res.render('404.jade');
-    } else {
-        next(err);
-    }
-});
-
-
