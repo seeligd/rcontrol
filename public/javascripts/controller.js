@@ -2,7 +2,7 @@
 (function () {
 
 	var inlinelog;
-	//var socket = io.connect('/');
+	var socket = io.connect('/');
 	
 	log = function() {
 			inlinelog.prepend(arguments[0],"<br/>");
@@ -21,7 +21,7 @@
 	$(document).ready(function() {
 		inlinelog = $("#log");
 
-		//socket.emit('controller', { info: 'controller - DOM ready' });
+		socket.emit('controller', { info: 'controller - DOM ready' });
 
 		var buttonState = {}, currentlyPressed = {}, mouseDown = false;
 
@@ -70,12 +70,15 @@
 			var toPress = _.difference(nextButtons,currentButtons);
 			var toRelease = _.difference(currentButtons, nextButtons);
 
+			// if something something changed, send to server
 			if (toPress.length > 0 || toRelease.length > 0) {
 				log("+ " + toPress.join(",") + " - " + toRelease.join(","));
+				socket.emit('controller', { press: toPress, release: toRelease});
 			}
 
 			// these are our new buttons
 			currentlyPressed = pressed;
+
 		}
 
 		//var element = document.getElementById('buttonscontainer');
