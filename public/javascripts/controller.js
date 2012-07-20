@@ -1,12 +1,12 @@
 
 (function () {
 
-	var inlinelog;
-	var socket = io.connect('/');
+	var inlinelog, socket = io.connect('/'), debug=false;
 	
 	log = function() {
+		if (debug) 
 			inlinelog.prepend(arguments[0],"<br/>");
-		}
+	}
 
 	var click = function(id, direction) {
 		console.log(id, direction);
@@ -21,7 +21,7 @@
 	$(document).ready(function() {
 		inlinelog = $("#log");
 
-		socket.emit('controller', { info: 'controller - DOM ready' });
+		socket.emit('controller', { info: 'controller ready' });
 
 		var buttonState = {}, currentlyPressed = {}, mouseDown = false;
 

@@ -19,7 +19,7 @@ a {
 #container {
 	display: inline-block;
 	position: absolute;
-	top: 20%;
+	/*top: 20%;*/
 	width: 100%;
 
 }
@@ -32,9 +32,7 @@ a {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	/*
 	background-color: #262e27 
-	*/
 }
 #buttonscontainer {
 	height: 100%;
@@ -95,8 +93,10 @@ a {
 	border-radius: 50%;
 
 	/* REMOVE */
+	/*
 	height: 52%;
 	top: 8%;
+	*/
 }
 
 #b {
