@@ -39,6 +39,9 @@ a {
 	width: 100%;
 	-webkit-user-select:none;
 }
+#buttonscontainer .pressed {
+	 opacity: .5;
+}
 #buttonscontainer>div {
 	position: absolute;
 }
@@ -49,7 +52,7 @@ a {
 	height: 57%;
 	top: 26%;
 	left: 4.8%;
-	background: black;
+	background: #262e27;
 	border-radius: 10%;
 }
 
@@ -57,6 +60,7 @@ a {
 	height: 100%;
 	width: 100%;
 	position: absolute;
+	background: #7b836b;
 }
 #left, #right{
 	width: 33%; 
@@ -99,7 +103,7 @@ a {
 	*/
 }
 
-#b {
+#a {
 	left: 81%;
 }
 

@@ -38,7 +38,8 @@
 				pressed: false,
 				intersect : function(x,y) {
 					return ( this.left <= x && x <= this.right ) && (this.top <= y && y <= this.bottom);
-				}
+				},
+				button: b
 			}
 		});
 
@@ -55,7 +56,7 @@
 		}
 
 		// for each touch event, go through the touches and figure out which buttons are being pressed
-		var handleTouchEvent = function(event,type) {
+		var handleTouchEvent = function(event) {
 			var pressed = {};
 			for (var i=0; i<event.touches.length; i++) {
 				if (event.touches[i].pageX) {
@@ -74,6 +75,10 @@
 			if (toPress.length > 0 || toRelease.length > 0) {
 				log("+ " + toPress.join(",") + " - " + toRelease.join(","));
 				socket.emit('controller', { press: toPress, release: toRelease});
+
+				// add pressed class to pressed
+				_.each(toPress,function(b) { buttonState[b].button.addClass('pressed'); });
+				_.each(toRelease,function(b) { buttonState[b].button.removeClass('pressed'); });
 			}
 
 			// these are our new buttons
@@ -81,19 +86,52 @@
 
 		}
 
+
 		//var element = document.getElementById('buttonscontainer');
 		//element.addEventListener("touchstart", touchStart, false);
 		$("#buttonscontainer")
 		.bind('touchstart', function (e) {
-			handleTouchEvent(e.originalEvent,'start');
+			handleTouchEvent(e.originalEvent);
 		})
 		$("#buttonscontainer")
 		.bind('touchend', function (e) {
-			handleTouchEvent(e.originalEvent,'end');
+			handleTouchEvent(e.originalEvent);
 		})
 		.bind('touchmove', function (e) {
-			handleTouchEvent(e.originalEvent,'move');
+			handleTouchEvent(e.originalEvent);
+		});
+
+		/*
+		.bind('mousedown', function (e) {
+			//handleMouseEvent(e.originalEvent);
+			handleMouseEvent(e.originalEvent.pageX, e.originalEvent.pageY);
+			console.log(e.originalEvent.pageX, e.originalEvent.pageY);
 		})
+		// only for testing- TODO: refactor
+		var handleMouseEvent = function(x,y) {
+			var pressed = {};
+			updateButtons(x,y,pressed)
+
+			var currentButtons = _.keys(currentlyPressed);
+			var nextButtons = _.keys(pressed);
+
+			var toPress = _.difference(nextButtons,currentButtons);
+			var toRelease = _.difference(currentButtons, nextButtons);
+
+			// if something something changed, send to server
+			if (toPress.length > 0 || toRelease.length > 0) {
+				log("+ " + toPress.join(",") + " - " + toRelease.join(","));
+				socket.emit('controller', { press: toPress, release: toRelease});
+
+				// add pressed class to pressed
+				_.each(toPress,function(b) { buttonState[b].button.addClass('pressed'); });
+				_.each(toRelease,function(b) { buttonState[b].button.removeClass('pressed'); });
+			}
+
+			// these are our new buttons
+			currentlyPressed = pressed;
+		}
+		*/
 
 		document.ontouchmove = function(event) {
 			event.preventDefault();

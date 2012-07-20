@@ -1,5 +1,6 @@
 (function($) {
 	var output = $("#output");
+	var nes;
 	var log = function(data) {
 		output.prepend("<p>" + data + "</p>");
 	}
@@ -13,14 +14,11 @@
 		});
 
 		socket.on("game", function (data) {
-			console.log("press:", data.press.join(","), "release:", data.release.join(","));
-			$doc.trigger('controller', { press: data.press, release: data.release});
-			// fire event to the ui
-			//$("#output").prepend("<p>+ " + data.press.join(",") + "<br/>- " + data.release.join(",") + "</p>");
+			//console.log("press:", data.press.join(","), "release:", data.release.join(","));
+			nes.ui.sendInput({ press: data.press, release: data.release});
 		});
 		
 
-		var nes;
 		nes = new JSNES({
 			'ui': $('#emulator').JSNESUI({
 				"Homebrew": [
@@ -28,7 +26,9 @@
 					['LJ65', 'roms/lj65/lj65.nes'],
 				],
 				"Working": [
-					['Contra', 'local-roms/contra/contra.nes'],
+					['Contra', 'local-roms/Contra.nes'],
+					['Mario Brothers', 'local-roms/Mario Bros.nes'],
+					['Super Mario Brothers 3', 'local-roms/Super Mario Bros 3.nes'],
 					/*
 					['Bubble Bobble', 'local-roms/Bubble Bobble (U).nes'],
 					['Donkey Kong', 'local-roms/Donkey Kong (JU).nes'],
