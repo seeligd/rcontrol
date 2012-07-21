@@ -1,0 +1,159 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+a {
+	color: #00B7FF;
+}
+
+.radius (@radius: 5px) {
+  border-radius: @radius;
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+}
+
+@controllerBg: #262e27;
+@lightPanelBg: #dad8cc;
+@darkPanelBg: #7b836b;
+@abButtonBg: #fb3228;
+@ssButtonBg: #333;
+
+#controller {
+	/*display: inline-block;*/
+	//display: none;
+	position: absolute;
+	width: 100%;
+
+	#info {
+		text-align: center;
+		font-size: 3em;
+		position: absolute;
+		width: 100%;
+		margin: 20% auto;
+	}
+	#dummy {
+		margin-top: 35.5%; /* get the right aspect ratio */
+	}
+	#element {
+		opacity: .2;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background-color: @controllerBg;
+	}
+	#buttonscontainer {
+		height: 100%;
+		width: 100%;
+		-webkit-user-select:none;
+		.pressed {
+			opacity: .5;
+		}
+	}
+	#buttonscontainer>div {
+		position: absolute;
+	}
+
+	#dpad {
+		position: absolute;
+		width: 20.8%;
+		height: 57%;
+		top: 26%;
+		left: 4.8%;
+		.radius(10%);
+	}
+
+	#left, #up, #right, #down {
+		height: 100%;
+		width: 100%;
+		position: absolute;
+		background: @darkPanelBg;
+	}
+	#left, #right{
+		width: 33%; 
+	}
+	#right {
+		right: 0;
+	}
+	#up, #down {
+		height: 33%; 
+	}
+	#down { 
+		bottom: 0;
+	}
+
+	#select, #start {
+		width: 8.5%;
+		height: 9%;
+		top: 65%;
+		left: 35%;
+		background: @ssButtonBg;
+		border-radius: 20%/50%;
+	}
+	#start {
+		left: 48%;
+	}
+
+	#a, #b {
+		width: 8.7%;
+		height: 25%;
+		background: @abButtonBg;
+		left: 68%;
+		top: 58%;
+		border: 1px solid #444;
+		.radius(50%);
+	}
+
+	#a {
+		left: 81%;
+	}
+
+	.ss_bg {
+		background: @darkPanelBg;
+		width: 30%;
+		left: 31%;
+		height: 13%;
+		border-radius: 5%/30%;
+
+		color: #fb3228;
+		text-transform: uppercase;
+
+		span {
+			padding-left: .8em;
+			font: 1.8em Arial;
+			display: none;
+		}
+	}
+	.ss_bg:nth-child(1) {
+		border-radius: 0 0 5% 5%/0 0 30% 30%;
+	}
+	.ss_bg:nth-child(2) {
+		top: 20%;
+	}
+	.ss_bg:nth-child(3) {
+		top: 40%;
+	}
+	#ss_container, #a_container, #b_container {
+		background: @lightPanelBg;
+	}
+	#ss_container{
+		width: 29%;
+		height: 29%;
+		.radius(5%/15%);
+		left: 31.5%;
+		top: 56%;
+	}
+
+	#a_container, #b_container {
+		left: 67%;
+		width: 11%;
+		height: 32%;
+		top: 55%;
+		.radius(8%);
+	}
+	#a_container {
+		left: 80%;
+	}
+}

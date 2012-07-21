@@ -21,10 +21,22 @@
 	$(document).ready(function() {
 		inlinelog = $("#log");
 
-		socket.emit('controller', { info: 'controller ready' });
+		// show controller after connecting
+		socket.on("connect", function (data) {
+				$("#info").text("connected").animate({ top: -1000},500, function() {
+					$("#element").animate({opacity: 1});
+				});
+				socket.emit("controller_register",{});
+		});
+
+		// keep track of latency
+		socket.on("ping", function(data) {
+			socket.emit("pong", data);
+		});
 
 		var buttonState = {}, currentlyPressed = {}, mouseDown = false;
 
+		// all the buttons that might get hit frequently (TODO: remove start/select)
 		$(".button").each(function(i,e) {
 			var b = $(e);
 			var offset = b.offset();
@@ -46,7 +58,7 @@
 		// subscribe to touch start, move and end events
 		// on each event, iterate through all touches and map touch locations to buttons
 
-		// add any 'pressed' buttons to the hash of pressed buttons
+		// add any 'pressed' buttons to the hash of pressed buttons - TODO: optimize
 		var updateButtons = function(x,y,pressed) {
 			for(var b in buttonState) {
 				if (buttonState[b].intersect(x,y)) {
@@ -58,7 +70,8 @@
 		// for each touch event, go through the touches and figure out which buttons are being pressed
 		var handleTouchEvent = function(event) {
 			var pressed = {};
-			for (var i=0; i<event.touches.length; i++) {
+			var i = event.touches.length;
+			while(i--) {
 				if (event.touches[i].pageX) {
 					var x = event.touches[i].pageX, y = event.touches[i].pageY;
 					updateButtons(x,y,pressed)
@@ -74,7 +87,7 @@
 			// if something something changed, send to server
 			if (toPress.length > 0 || toRelease.length > 0) {
 				log("+ " + toPress.join(",") + " - " + toRelease.join(","));
-				socket.emit('controller', { press: toPress, release: toRelease});
+				socket.emit('c', JSON.stringify({ p: toPress, r: toRelease, d: Date.now()}));
 
 				// add pressed class to pressed
 				_.each(toPress,function(b) { buttonState[b].button.addClass('pressed'); });
@@ -85,7 +98,6 @@
 			currentlyPressed = pressed;
 
 		}
-
 
 		//var element = document.getElementById('buttonscontainer');
 		//element.addEventListener("touchstart", touchStart, false);
@@ -101,37 +113,18 @@
 			handleTouchEvent(e.originalEvent);
 		});
 
-		/*
-		.bind('mousedown', function (e) {
-			//handleMouseEvent(e.originalEvent);
-			handleMouseEvent(e.originalEvent.pageX, e.originalEvent.pageY);
-			console.log(e.originalEvent.pageX, e.originalEvent.pageY);
-		})
-		// only for testing- TODO: refactor
-		var handleMouseEvent = function(x,y) {
-			var pressed = {};
-			updateButtons(x,y,pressed)
-
-			var currentButtons = _.keys(currentlyPressed);
-			var nextButtons = _.keys(pressed);
-
-			var toPress = _.difference(nextButtons,currentButtons);
-			var toRelease = _.difference(currentButtons, nextButtons);
-
-			// if something something changed, send to server
-			if (toPress.length > 0 || toRelease.length > 0) {
-				log("+ " + toPress.join(",") + " - " + toRelease.join(","));
-				socket.emit('controller', { press: toPress, release: toRelease});
-
-				// add pressed class to pressed
-				_.each(toPress,function(b) { buttonState[b].button.addClass('pressed'); });
-				_.each(toRelease,function(b) { buttonState[b].button.removeClass('pressed'); });
-			}
-
-			// these are our new buttons
-			currentlyPressed = pressed;
-		}
-		*/
+		// these don't need to be optimized since they're not used during game play
+		$("#start").bind('touchstart', function(e) {
+			socket.emit('c', JSON.stringify({ p: ['start'], r: [], d: Date.now()}));
+		}).bind('touchend', function(e) {
+			socket.emit('c', JSON.stringify({ p: [], r: ['start'], d: Date.now()}));
+		});
+		$("#select").bind('touchstart', function(e) {
+			socket.emit('c', JSON.stringify({ p: ['select'], r: [], d: Date.now()}));
+		}).bind('touchend', function(e) {
+			socket.emit('c', JSON.stringify({ p: [], r: ['select'], d: Date.now()}));
+		});
+		
 
 		document.ontouchmove = function(event) {
 			event.preventDefault();

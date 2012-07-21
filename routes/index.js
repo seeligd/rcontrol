@@ -4,15 +4,30 @@
  */
 var state = require('../data/state');
 
-// TODO: add middleware to route phone to controller and non-phone to game
+var is_mobile = function(req) {
+	var ua = req.header('user-agent');
+	if (/mobile/i.test(ua)) return true;
+	else return false;
+}
+
+/* send mobile devices to the controller page, other devices to the game page */
 exports.index = function(req, res){
-  res.render('index', { title: 'rControl' })
+	if (is_mobile(req)) res.render('controller', { title: 'controller' });
+	else {
+		// get game ID
+		(res.render('game', {title: 'Game', id:'...'}));
+	};
 };
 
 exports.game = function(req, res){
-  res.render('game', { title: 'Game', id: state.game.getNewGameId() })
+  res.render('game', { title: 'JSNES ', id: state.game.getNewGameId() })
 };
 
+exports.controller = function(req, res){
+	res.render('controller', { title: 'Controller', layout: 'controller' })
+};
+
+/*
 exports.game_existing = function(req, res){
 	// need to pass in ID:
 	console.log(req.params);
@@ -23,7 +38,4 @@ exports.game_existing = function(req, res){
   	throw new NotFound;
   }
 };
-
-exports.controller = function(req, res){
-  res.render('controller', { title: 'Controller', layout: 'controller' })
-};
+*/

@@ -1,8 +1,157 @@
+html,
 body {
-	padding: 50px;
-	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 a {
-	color: #00B7FF;
+  color: #00B7FF;
 }
+#controller {
+  /*display: inline-block;*/
 
+  position: absolute;
+  width: 100%;
+}
+#controller #info {
+  text-align: center;
+  font-size: 3em;
+  position: absolute;
+  width: 100%;
+  margin: 20% auto;
+}
+#controller #dummy {
+  margin-top: 35.5%;
+  /* get the right aspect ratio */
+
+}
+#controller #element {
+  opacity: .2;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #262e27;
+}
+#controller #buttonscontainer {
+  height: 100%;
+  width: 100%;
+  -webkit-user-select: none;
+}
+#controller #buttonscontainer .pressed {
+  opacity: .5;
+}
+#controller #buttonscontainer > div {
+  position: absolute;
+}
+#controller #dpad {
+  position: absolute;
+  width: 20.8%;
+  height: 57%;
+  top: 26%;
+  left: 4.8%;
+  border-radius: 10%;
+  -webkit-border-radius: 10%;
+  -moz-border-radius: 10%;
+}
+#controller #left,
+#controller #up,
+#controller #right,
+#controller #down {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background: #7b836b;
+}
+#controller #left,
+#controller #right {
+  width: 33%;
+}
+#controller #right {
+  right: 0;
+}
+#controller #up,
+#controller #down {
+  height: 33%;
+}
+#controller #down {
+  bottom: 0;
+}
+#controller #select,
+#controller #start {
+  width: 8.5%;
+  height: 9%;
+  top: 65%;
+  left: 35%;
+  background: #333333;
+  border-radius: 0.4%;
+}
+#controller #start {
+  left: 48%;
+}
+#controller #a,
+#controller #b {
+  width: 8.7%;
+  height: 25%;
+  background: #fb3228;
+  left: 68%;
+  top: 58%;
+  border: 1px solid #444;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+}
+#controller #a {
+  left: 81%;
+}
+#controller .ss_bg {
+  background: #7b836b;
+  width: 30%;
+  left: 31%;
+  height: 13%;
+  border-radius: 0.16666666666666666%;
+  color: #fb3228;
+  text-transform: uppercase;
+}
+#controller .ss_bg span {
+  padding-left: .8em;
+  font: 1.8em Arial;
+  display: none;
+}
+#controller .ss_bg:nth-child(1) {
+  border-radius: 0 0 5% Infinity% 0 30% 30%;
+}
+#controller .ss_bg:nth-child(2) {
+  top: 20%;
+}
+#controller .ss_bg:nth-child(3) {
+  top: 40%;
+}
+#controller #ss_container,
+#controller #a_container,
+#controller #b_container {
+  background: #dad8cc;
+}
+#controller #ss_container {
+  width: 29%;
+  height: 29%;
+  border-radius: 0.3333333333333333%;
+  -webkit-border-radius: 0.3333333333333333%;
+  -moz-border-radius: 0.3333333333333333%;
+  left: 31.5%;
+  top: 56%;
+}
+#controller #a_container,
+#controller #b_container {
+  left: 67%;
+  width: 11%;
+  height: 32%;
+  top: 55%;
+  border-radius: 8%;
+  -webkit-border-radius: 8%;
+  -moz-border-radius: 8%;
+}
+#controller #a_container {
+  left: 80%;
+}

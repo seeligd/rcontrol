@@ -1,15 +1,27 @@
-h1= title
-//p Your id is #{id}
+//h1= title
+p 
+	| websockets id:
+	span#gameid #{id}
 
 #container
 	#emulator
-
+	#log
+//<!--
+		canvas.nes-screen
+		.nes-roms
+			select
+				option Select a ROM...
+		.nes-controls
+			input.nes-pause
+			input.nes-restart
+			input.nes-enablesound
+//-->
+		
 script(type='text/javascript', src="/javascripts/jquery.min.js")
 script(type='text/javascript', src='/javascripts/socket.io.js')
 script(type='text/javascript', src='/javascripts/underscore.js')
 script(type='text/javascript', src='/javascripts/game.js')
 
-//script(src="lib/jquery-1.4.2.min.js" type="text/javascript" charset="utf-8")
 script(src="/lib/dynamicaudio-min.js", type="text/javascript", charset="utf-8")
 script(src="/source/nes.js", type="text/javascript", charset="utf-8")
 script(src="/source/utils.js", type="text/javascript", charset="utf-8")
