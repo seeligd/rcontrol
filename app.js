@@ -46,6 +46,11 @@ io.sockets.on('connection', function(socket) {
 		console.log(socket.id, "latency:", (Date.now() - data.d)/2.0, "ms");
 	});
 
+	// respond to pings
+	socket.on("ping", function(data) {
+		socket.emit('pong', data)
+	});
+
 	// controller data
 	socket.on('c',function(data) {
 		console.log(data);
@@ -98,7 +103,13 @@ io.sockets.on('connection', function(socket) {
 // Routes
 app.get('/', routes.index);
 app.get('/game', routes.game);
+app.get('/g', routes.game);
+
 app.get('/controller', routes.controller);
+app.get('/c', routes.controller);
+
+app.get('/benchmark', routes.benchmark);
+app.get('/b', routes.benchmark);
 
 app.listen(3000, function(){
 	console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

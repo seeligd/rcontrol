@@ -27,6 +27,10 @@ exports.controller = function(req, res){
 	res.render('controller', { title: 'Controller', layout: 'controller' })
 };
 
+exports.benchmark = function(req, res){
+	res.render('benchmark', { title: 'Benchmark', layout: 'benchmark' })
+};
+
 /*
 exports.game_existing = function(req, res){
 	// need to pass in ID:
