@@ -53,11 +53,11 @@ io.sockets.on('connection', function(socket) {
 
 	// controller data
 	socket.on('c',function(data) {
-		console.log(data);
 		_.each(gsockets, function(gamesocket) {
-			console.log(data, ">", gamesocket.id);
 			gamesocket.emit('g', data);
-		})
+			console.log(data, ">", gamesocket.id);
+		});
+		console.log(data);
 	});
 
 	socket.on('controller_register', function(data) {

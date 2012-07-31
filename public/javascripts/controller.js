@@ -10,7 +10,7 @@
 
 	var click = function(id, direction) {
 		console.log(id, direction);
-		socket.emit('controller', { 
+		socket.emit('controller', {
 			data: {
 				button: id,
 				direction: direction
@@ -84,10 +84,10 @@
 			var toPress = _.difference(nextButtons,currentButtons);
 			var toRelease = _.difference(currentButtons, nextButtons);
 
-			// if something something changed, send to server
+			// if something changed, send to server
 			if (toPress.length > 0 || toRelease.length > 0) {
+				socket.emit('c', { p: toPress, r: toRelease, d: Date.now()});
 				log("+ " + toPress.join(",") + " - " + toRelease.join(","));
-				socket.emit('c', JSON.stringify({ p: toPress, r: toRelease, d: Date.now()}));
 
 				// add pressed class to pressed
 				_.each(toPress,function(b) { buttonState[b].button.addClass('pressed'); });
@@ -115,14 +115,14 @@
 
 		// these don't need to be optimized since they're not used during game play
 		$("#start").bind('touchstart', function(e) {
-			socket.emit('c', JSON.stringify({ p: ['start'], r: [], d: Date.now()}));
+			socket.emit('c', { p: ['start'], r: [], d: Date.now()});
 		}).bind('touchend', function(e) {
-			socket.emit('c', JSON.stringify({ p: [], r: ['start'], d: Date.now()}));
+			socket.emit('c', { p: [], r: ['start'], d: Date.now()});
 		});
 		$("#select").bind('touchstart', function(e) {
-			socket.emit('c', JSON.stringify({ p: ['select'], r: [], d: Date.now()}));
+			socket.emit('c', { p: ['select'], r: [], d: Date.now()});
 		}).bind('touchend', function(e) {
-			socket.emit('c', JSON.stringify({ p: [], r: ['select'], d: Date.now()}));
+			socket.emit('c', { p: [], r: ['select'], d: Date.now()});
 		});
 		
 

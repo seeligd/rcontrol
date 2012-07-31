@@ -19,10 +19,10 @@
 		});
 
 		socket.on("g", function (data) {
-			console.log("controller input:", data);
-			var input = JSON.parse(data);
-			$("#log").html("pressed: "+ input.p + "<br/> released: " + input.r);
-			nes.ui.sendInput({ press: input.p, release: input.r});
+      // send input to nes before updating HTML or logging
+			nes.ui.sendInput({ press: data.p, release: data.r });
+			$("#log").html("pressed: "+ data.p + "<br/> released: " + data.r + "<br/>latency:" + (Date.now() - data.d) + "ms");
+      console.log("controller input:",data);
 		});
 
 		socket.on("ping", function(data) {
@@ -42,6 +42,7 @@
 					['Contra', 'local-roms/Contra.nes'],
 					['Mario Brothers', 'local-roms/Mario Bros.nes'],
 					['Super Mario Brothers 3', 'local-roms/Super Mario Bros 3.nes'],
+					['Super Mario Brothers', 'roms/smb.nes'],
 				],
 			})
 		});
