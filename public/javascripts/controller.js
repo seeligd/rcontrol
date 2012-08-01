@@ -1,42 +1,15 @@
 
 (function () {
 
-	var inlinelog, socket = io.connect('/'), debug=false;
+	var inlinelog, socket = io.connect('/'), debug=false, buttonState = {}, currentlyPressed = {};
 	
 	log = function() {
 		if (debug) 
 			inlinelog.prepend(arguments[0],"<br/>");
 	}
 
-	var click = function(id, direction) {
-		console.log(id, direction);
-		socket.emit('controller', {
-			data: {
-				button: id,
-				direction: direction
-			}
-		});
-	};
-
-	$(document).ready(function() {
-		inlinelog = $("#log");
-
-		// show controller after connecting
-		socket.on("connect", function (data) {
-				$("#info").text("connected").animate({ top: -1000},500, function() {
-					$("#element").animate({opacity: 1});
-				});
-				socket.emit("controller_register",{});
-		});
-
-		// keep track of latency
-		socket.on("ping", function(data) {
-			socket.emit("pong", data);
-		});
-
-		var buttonState = {}, currentlyPressed = {}, mouseDown = false;
-
-		// all the buttons that might get hit frequently (TODO: remove start/select)
+	var updateInputPositions = function(event) {
+		// get the locations of all the buttons that might get hit frequently (not select/start) 
 		$(".button").each(function(i,e) {
 			var b = $(e);
 			var offset = b.offset();
@@ -54,6 +27,40 @@
 				button: b
 			}
 		});
+		switch(window.orientation) 
+		{  
+			case -90:
+			case 90:
+				// landscape
+				break;
+			default:
+				//alert('recommend landscape mode');
+				break; 
+		}
+	
+	};
+
+	window.onorientationchange = updateInputPositions;
+
+	$(document).ready(function() {
+		updateInputPositions("init");
+
+		inlinelog = $("#log");
+
+		// show controller after connecting
+		socket.on("connect", function (data) {
+				$("#info").text("connected").animate({ top: -1000},500, function() {
+					$("#element").animate({opacity: 1});
+				});
+				socket.emit("controller_register",{});
+		});
+
+		// keep track of latency
+		socket.on("ping", function(data) {
+			socket.emit("pong", data);
+		});
+
+
 
 		// subscribe to touch start, move and end events
 		// on each event, iterate through all touches and map touch locations to buttons
@@ -87,7 +94,7 @@
 			// if something changed, send to server
 			if (toPress.length > 0 || toRelease.length > 0) {
 				socket.emit('c', { p: toPress, r: toRelease, d: Date.now()});
-				log("+ " + toPress.join(",") + " - " + toRelease.join(","));
+				//log("+ " + toPress.join(",") + " - " + toRelease.join(","));
 
 				// add pressed class to pressed
 				_.each(toPress,function(b) { buttonState[b].button.addClass('pressed'); });
