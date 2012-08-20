@@ -28,14 +28,14 @@
 			}
 		});
 		switch(window.orientation) 
-		{  
+		{
 			case -90:
 			case 90:
 				// landscape
 				break;
 			default:
 				//alert('recommend landscape mode');
-				break; 
+				break;
 		}
 	
 	};
@@ -88,7 +88,7 @@
 			var currentButtons = _.keys(currentlyPressed);
 			var nextButtons = _.keys(pressed);
 
-			var toPress = _.difference(nextButtons,currentButtons);
+			var toPress = _.difference(nextButtons, currentButtons);
 			var toRelease = _.difference(currentButtons, nextButtons);
 
 			// if something changed, send to server
@@ -103,7 +103,6 @@
 
 			// these are our new buttons
 			currentlyPressed = pressed;
-
 		}
 
 		//var element = document.getElementById('buttonscontainer');

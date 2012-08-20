@@ -43,7 +43,7 @@ io.sockets.on('connection', function(socket) {
 		socket.emit('ping', {d: Date.now()})
 	},2000);
 	socket.on("pong", function(data) {
-		console.log(socket.id, "latency:", (Date.now() - data.d)/2.0, "ms");
+		// console.log(socket.id, "latency:", (Date.now() - data.d)/2.0, "ms");
 	});
 
 	// respond to pings
@@ -51,13 +51,21 @@ io.sockets.on('connection', function(socket) {
 		socket.emit('pong', data)
 	});
 
+  var i = 0;
+  var util = require('util');
+
 	// controller data
 	socket.on('c',function(data) {
 		_.each(gsockets, function(gamesocket) {
 			gamesocket.emit('g', data);
-			console.log(data, ">", gamesocket.id);
+			//console.log(data, ">", gamesocket.id);
+      if (data['p'].length) console.log("P ", i, util.inspect(data['p']));
+      if (data['r'].length) console.log("R ", i, data['r'])
+      
+      if (data['p'][0] == 'a') i++;
 		});
-		console.log(data);
+    setTimeout( function() {i = 0;}, 1500);
+		// console.log(data);
 	});
 
 	socket.on('controller_register', function(data) {

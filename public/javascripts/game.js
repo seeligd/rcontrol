@@ -41,6 +41,7 @@
 				"Testing": [
 					['Contra', 'local-roms/Contra.nes'],
 					['Mario Brothers', 'local-roms/Mario Bros.nes'],
+					['Mario Brothers (local)', 'roms/smb.nes'],
 					['Super Mario Brothers 3', 'local-roms/Super Mario Bros 3.nes'],
 					['Super Mario Brothers', 'roms/smb.nes'],
 				],
