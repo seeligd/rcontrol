@@ -10,8 +10,12 @@ a {
 #controller {
   /*display: inline-block;*/
 
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
   position: absolute;
   width: 100%;
+  z-index: 1;
 }
 #controller #info {
   text-align: center;
@@ -154,4 +158,10 @@ a {
 }
 #controller #a_container {
   left: 80%;
+}
+#log {
+  position: fixed;
+  bottom: 0px;
+  height: 30%;
+  overflow: scroll;
 }

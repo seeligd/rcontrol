@@ -22,8 +22,12 @@ a {
 #controller {
 	/*display: inline-block;*/
 	//display: none;
+	-webkit-user-select: none;
+	-webkit-touch-callout: none;
+	-webkit-tap-highlight-color: transparent;
 	position: absolute;
 	width: 100%;
+	z-index: 1;
 
 	#info {
 		text-align: center;
@@ -157,3 +161,9 @@ a {
 		left: 80%;
 	}
 }
+	#log {
+		position: fixed;
+		bottom: 0px;
+		height: 30%;
+		overflow: scroll;
+	}

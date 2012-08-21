@@ -1,11 +1,10 @@
 
 (function () {
 
-	var inlinelog, socket = io.connect('/'), debug=false, buttonState = {}, currentlyPressed = {};
+	var inlinelog, socket = io.connect('/'), buttonState = {}, currentlyPressed = {};
 	
 	log = function() {
-		if (debug) 
-			inlinelog.prepend(arguments[0],"<br/>");
+		inlinelog.prepend(arguments[0],"<br/>");
 	}
 
 	var updateInputPositions = function(event) {
@@ -76,9 +75,12 @@
 
 		// for each touch event, go through the touches and figure out which buttons are being pressed
 		var handleTouchEvent = function(event) {
+
 			var pressed = {};
 			var i = event.touches.length;
+			//log(event.touches.length);
 			while(i--) {
+				//log("loop: " + i + "px" + event.touches[i].pageX);
 				if (event.touches[i].pageX) {
 					var x = event.touches[i].pageX, y = event.touches[i].pageY;
 					updateButtons(x,y,pressed)
@@ -97,41 +99,55 @@
 				//log("+ " + toPress.join(",") + " - " + toRelease.join(","));
 
 				// add pressed class to pressed
-				_.each(toPress,function(b) { buttonState[b].button.addClass('pressed'); });
-				_.each(toRelease,function(b) { buttonState[b].button.removeClass('pressed'); });
+				//_.each(toPress,function(b) { buttonState[b].button.addClass('pressed'); log(" p:" + b); });
+				//_.each(toRelease,function(b) { buttonState[b].button.removeClass('pressed'); });
 			}
 
 			// these are our new buttons
 			currentlyPressed = pressed;
-
+			log(JSON.stringify(_.keys(pressed)));
 		}
 
 		//var element = document.getElementById('buttonscontainer');
 		//element.addEventListener("touchstart", touchStart, false);
 		$("#buttonscontainer")
 		.bind('touchstart', function (e) {
+			log("start");
 			handleTouchEvent(e.originalEvent);
 		})
-		$("#buttonscontainer")
 		.bind('touchend', function (e) {
+			log("end");
 			handleTouchEvent(e.originalEvent);
 		})
 		.bind('touchmove', function (e) {
+			//log("move");
 			handleTouchEvent(e.originalEvent);
+		})
+		.bind('mouseup', function(e) {
+			log('up');
 		});
 
 		// these don't need to be optimized since they're not used during game play
 		$("#start").bind('touchstart', function(e) {
 			socket.emit('c', { p: ['start'], r: [], d: Date.now()});
 		}).bind('touchend', function(e) {
+			log('start touch end');
 			socket.emit('c', { p: [], r: ['start'], d: Date.now()});
 		});
+		
 		$("#select").bind('touchstart', function(e) {
 			socket.emit('c', { p: ['select'], r: [], d: Date.now()});
 		}).bind('touchend', function(e) {
+			log('select touch end');
 			socket.emit('c', { p: [], r: ['select'], d: Date.now()});
 		});
-		
+
+		$("#start").bind('click', function(e) {
+			log("click start");
+		});
+		$("#select").bind('click', function(e) {
+			log("select");
+		});
 
 		document.ontouchmove = function(event) {
 			event.preventDefault();
