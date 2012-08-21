@@ -60,7 +60,6 @@
 		});
 
 
-
 		// subscribe to touch start, move and end events
 		// on each event, iterate through all touches and map touch locations to buttons
 
@@ -113,18 +112,21 @@
 		$("#buttonscontainer")
 		.bind('touchstart', function (e) {
 			log("start");
+			e.preventDefault();
+			e.stopPropagation();
 			handleTouchEvent(e.originalEvent);
 		})
 		.bind('touchend', function (e) {
 			log("end");
+			e.preventDefault();
+			e.stopPropagation();
 			handleTouchEvent(e.originalEvent);
 		})
 		.bind('touchmove', function (e) {
-			//log("move");
+			log("move");
+			e.preventDefault();
+			e.stopPropagation();
 			handleTouchEvent(e.originalEvent);
-		})
-		.bind('mouseup', function(e) {
-			log('up');
 		});
 
 		// these don't need to be optimized since they're not used during game play
@@ -142,12 +144,14 @@
 			socket.emit('c', { p: [], r: ['select'], d: Date.now()});
 		});
 
+		/*
 		$("#start").bind('click', function(e) {
 			log("click start");
 		});
 		$("#select").bind('click', function(e) {
 			log("select");
 		});
+		*/
 
 		document.ontouchmove = function(event) {
 			event.preventDefault();
